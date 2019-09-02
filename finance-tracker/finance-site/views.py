@@ -6,7 +6,7 @@ from django.db.models import F
 from django.utils import timezone
 ##from django.views import generic
 
-from .models import Question, Choice
+from .models import Account, Transation, User, TransactionCategory
 
 def index(request):
     # show the most recently published questions. exclude future-dated questions 
@@ -17,20 +17,10 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-# def detail(request, question_id):
-#     try:
-#         question = Question.objects.get(pk=question_id)
-#     except Question.DoesNotExist:
-#         raise Http404("Question does not exist!")
-#     context = {
-#         'question': question
-#     }
-#     template = loader.get_template('polls/detail.html')
-#     return HttpResponse(template.render(context, request))
 
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/detail.html', {'question':question})
+def detail(request, account_id):
+    account = get_object_or_404(Account, pk=account_id)
+    return render(request, 'finance/detail.html', {'account':account})
 
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -49,21 +39,3 @@ def vote(request, question_id):
         selected_choice.votes = F('votes')+1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,))) #need the empty comma here...
-
-# # same idea as above, but use the generic view system
-# class IndexView(generic.ListView):
-#     template_name = 'polls/index.html'
-#     context_object_name = 'latest_question_list'
-
-#     def get_queryset(self):
-#         return Question.objects.orber_by('-pub_date')[:5]
-    
-# class DetailView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/detail.html'
-    
-# class ResultsView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/results.html'
-
-            

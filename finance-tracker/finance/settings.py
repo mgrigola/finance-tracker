@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
-    'polls.apps.FinanceTransactionsConfig', #this app
+    'finance.apps.FinanceConfig', #this app
     'django.contrib.admin',   # V default django apps V
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'finance-tracker.urls'
+ROOT_URLCONF = 'finance-site.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
+WSGI_APPLICATION = 'finance-site.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -90,6 +90,8 @@ AUTH_PASSWORD_VALIDATORS = [
     ,{'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
     # ,{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'}
 ]
+
+AUTH_USER_MODEL = 'finance.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
