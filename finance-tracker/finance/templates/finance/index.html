@@ -1,0 +1,20 @@
+{% load static %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'finance/style.css' %}" /> -->
+
+
+<h1>Hello, {{current_user.username}}</h1>
+
+{% if account_list %}
+    <table cellspacing="0" cellpadding="0" margin="0" height="100%" width="100%">
+        {% for account in account_list %}
+            <tr>
+                <td><a href="{% url 'finance:detail' account.id %}">{{account.title}}</a></td>
+                <td>{{account.acct_type}}</td>
+                <td>{{account.acct_balance}}</td>
+            </tr>    
+        {% endfor %}
+    </table>
+{% else %}
+    <h2>You have no accounts</h2>
+    <a href="{% url 'finance:create' %}">Create one</a>
+{% endif %}

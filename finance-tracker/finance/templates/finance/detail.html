@@ -1,0 +1,17 @@
+<h1>{{ account.title}}</h1>
+
+{% if error_message %}
+    <p><strong>{{error_message}}</strong></p>
+{% endif %}
+
+<table cellspacing="0" cellpadding="0" margin="0" height="100%" width="100%">
+    {% for tx in account.transaction_set.all %}
+        <tr>
+            <td>{{tx.tx_type}}</td>
+            <td>{{tx.tx_date}}</td>
+            <td>{{tx.description}}</td>
+            <td>{{tx.amount}}</td>
+            <td>{{tx.balance}}</td>
+        </tr>
+    {% endfor %}
+</table>

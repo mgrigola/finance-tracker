@@ -1,23 +1,21 @@
-"""mysite URL Configuration
+from django.urls import path
+from . import views
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path, include
-
+app_name = 'finance'
 urlpatterns = [
-    path('home/', include('finance.urls')) # if url matches '../polls/*' send * to ../polls/urls.py
-    ,path('admin/', admin.site.urls)
-    ,path('index.html', include('finance.urls')) # send index.html to index.html...
+    path('', views.index, name='index'),
+    path('account/<int:account_id>/', views.account_detail, name='detail'),
+    path('user/<int:user_id>/', views.create_account, name='create'),
+    path('create', views.create_account, name='create')
 ]
+
+
+# same idea using generic views
+## urlpatterns = [
+#     # /polls/
+#     path('', views.IndexView.as_view(), name='index'),
+#     # /polls/questionNo/detail
+#     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+#     path('<int:ok>/results/', views.ResultsView.as_view(), name='results'),
+#     path('<int:question_id>/vote/', views.vote, name='vote')
+# ]
