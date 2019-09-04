@@ -11,7 +11,7 @@ import csv
 
 class Account(models.Model):
     title = models.CharField(max_length=64)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     acct_balance = models.FloatField(default=0.0)
     acct_source = models.CharField(max_length=64, default=None, blank=True, null=True)  #e.g. Chase (should be INSTITUTION_ID + anotehr table)
     acct_type = models.CharField(max_length=64, default=None, blank=True, null=True)   #savings, checking, investment - later drives how we show transactions maybe?
@@ -33,15 +33,19 @@ class Account(models.Model):
             reader = csv.reader(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for row in reader:
                 if row[0] == 'Details': continue  # skip header row if present
+                print('\n')
+                print(self.id, ': ', row)
                 tx = Transaction()
+                tx.account = self
                 tx.tx_date = datetime.datetime.strptime(row[1], '%m/%d/%Y')
                 tx.description = row[2]
                 tx.amount = float(row[3])
                 tx.tx_type = row[4]
-                tx.balance = float(row[5])
+                if row[5]=='' or row[5]==' ': tx.balance = 0
+                else: tx.balance = float(row[5])
 
                 # check for duplicates - import twice gives same transactions as import once
-                duplicateTxs = Transaction.objects.filter(account_id=self.id, tx_date=tx.tx_date, description=tx.description, amount=tx.amount)
+                duplicateTxs = Transaction.objects.filter(account=self, tx_date=tx.tx_date, description=tx.description, amount=tx.amount)
                 if len(duplicateTxs)==0:
                     tx.save()
                 # else:
@@ -49,7 +53,7 @@ class Account(models.Model):
 
 
 class Transaction(models.Model):
-    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     description = models.CharField(max_length=200, default=None, blank=True, null=True)
     tx_date = models.DateTimeField('transaction date')
     tx_type = models.CharField(max_length=32, default=None, blank=True, null=True)
@@ -57,7 +61,7 @@ class Transaction(models.Model):
     balance = models.FloatField(default=0.0, blank=True, null=True) #balance after the transaction if available
 
 class FinanceCategory(models.Model):
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
 
 # map each transaction to one or many cateogries
