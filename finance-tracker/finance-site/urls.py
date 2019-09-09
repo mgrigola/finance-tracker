@@ -22,4 +22,5 @@ urlpatterns = [
     ,path('index/', include('finance.urls'))
     ,path('finance/', include('finance.urls'))
     ,path('', include('finance.urls'))
+    ,path('accounts/', include('django.contrib.auth.urls'))
 ]

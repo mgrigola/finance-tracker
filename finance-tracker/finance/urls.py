@@ -1,12 +1,14 @@
+from django.conf.urls import url
 from django.urls import path
+# from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = 'finance'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('account/<int:account_id>/', views.account_detail, name='detail'),
+    path('account/<uuid:account_id>/', views.account_detail, name='account'),
     path('user/<int:user_id>/', views.create_account, name='create'),
-    path('create', views.create_account, name='create')
+    path('create', views.create_account, name='create'),
 ]
 
 

@@ -10,7 +10,7 @@ class FinanceCategoryInline(admin.TabularInline):
 
 class AccountAdmin(admin.ModelAdmin):
     list_display = ('title', 'acct_type', 'acct_source', 'acct_balance')
-    search_fields = ['title', 'acct_type', 'acct_source', 'acct_balance']
+    search_fields = ['title', 'acct_type', 'acct_source']
 
 admin.site.register(Account, AccountAdmin)
 

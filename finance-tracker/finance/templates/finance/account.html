@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transactions</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'finance/style.css' %}" />
+    <link rel="shortcut icon" href="{% static 'finance/images/chasefavicon.ico' %}">
+</head>
+
+<body>
+    <div style="display: block;">
+        <span class="acct-title">{{account.title}} - {{account.acct_type}}</span>
+        <span class="acct-bal">${{account.acct_balance}}</span>
+        <span font size=>(as of {{account.latest_date}})</span>
+    </div>
+
+    {% if error_message %}
+        <p><strong>{{error_message}}</strong></p>
+    {% endif %}
+
+    <div class="detail-tbl-container">
+        <table class="detail-tbl">
+            <tr>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th align="right">Amount</th>
+                <th align="right">Balance</th>
+            </tr>
+            {% for tx in account.transaction_set.all %}
+                <tr>
+                    <td>{{tx.tx_type}}</td>
+                    <td>{{tx.tx_date|date:'M-d'}}</td>
+                    <td>{{tx.description}}</td>
+                    <td align="right">{{tx.amount|floatformat:2}}</td>
+                    <td align="right">{{tx.balance|floatformat:2}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>

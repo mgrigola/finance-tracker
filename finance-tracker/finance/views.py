@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.db.models import F
 from django.utils import timezone
 
-from .models import Account, Transaction, TransactionCategory#, User
+from .models import Account, Transaction, TransactionCategory
 
+@login_required
 def index(request):
     # show the most recently published questions. exclude future-dated questions 
     current_user = request.user
@@ -18,11 +20,12 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-
+@login_required
 def account_detail(request, account_id):
     account = get_object_or_404(Account, pk=account_id)
-    return render(request, 'finance/detail.html', {'account':account})
+    return render(request, 'finance/account.html', {'account':account})
 
+@login_required
 def create_account(request):
     current_user = request.user
     return render(request, 'finance/create.html', {'current_user':current_user})

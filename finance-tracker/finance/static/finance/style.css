@@ -1,7 +1,59 @@
-li a {
-    color: green
+body {
+    background: #fff
 }
 
-body {
-    background: white url("images/background.gif") /*no-repeat*/;
+.acct-title {
+	font-size: 24;
+	color: #004;
+    margin: 20px;
+    font-weight: bolder;
+}
+
+.acct-bal {
+	font-size: 24;
+	color: #6b6;
+    margin: 10px;
+    font-weight: bolder;
+    padding: 0 0px 0 10px;
+}
+
+.detail-tbl td{
+    border-collapse: collapse;
+	font: 12px;
+	color: #00a;
+    border-spacing: 0;
+    padding: 2px 8px;
+}
+.detail-tbl th {
+    text-align: left;
+    vertical-align: bottom;
+    padding: 1px;
+    border-bottom: 1px solid #ddd;
+    height: 30px;
+	font: 14px;
+	font-weight: bold;
+    color: #00f;
+    font-family: 'Segoe UI';
+}
+
+.button-round a {
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI';
+    text-align: center;
+    vertical-align: center;
+    border-radius: 8px;
+    padding: 6px 6px;
+    margin: 14px;
+    background-color: #ccc;
+    text-decoration: none;
+}
+
+.index-tbl tr td{
+    text-align: left;
+    vertical-align: bottom;
+    padding: 5px 20px;
+	font: 14px;
+	font-weight: bold;
+    font-family: 'Segoe UI';
 }
