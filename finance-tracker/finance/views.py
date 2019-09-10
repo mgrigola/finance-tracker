@@ -28,4 +28,4 @@ def account_detail(request, account_id):
 @login_required
 def create_account(request):
     current_user = request.user
-    return render(request, 'finance/create.html', {'current_user':current_user})
+    return render(request, 'finance/create.html', {'user':current_user})

@@ -82,7 +82,3 @@ class TransactionCategory(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     category = models.ForeignKey(FinanceCategory, on_delete=models.CASCADE)
 
-# # make some default categories somewehere. this holds a custom categories created by/for a user
-# class UserCategories(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     title = models.CharField(max_length=64)
