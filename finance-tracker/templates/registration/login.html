@@ -1,7 +1,7 @@
-{% extends 'admin/base.html' %}
+{% extends "admin/base.html" %}
 
 {% block title %}Login{% endblock %}
-
+<!-- 
 {% block content %}
 <h2>Login</h2>
 <form method="POST">
@@ -9,12 +9,12 @@
   {{ form.as_p }}
   <button type="submit">Login</button>
 </form>
-{% endblock %}
+{% endblock %} -->
 
 
-{% block content_title %}<h1>Login</h1>{% endblock content_title %}
+{% block contenttitle %}<h1>Login</h1>{% endblock contenttitle %}
 
-{% block content %}
+<!-- %{ block content }% -->
     <div>
 		{{ form.non_field_errors }}
 		
@@ -37,4 +37,4 @@
 			<input type="submit" value="Login" />
 		</form>
 	</div>
-{% endblock content %}
+<!-- %{ endblock content }% -->

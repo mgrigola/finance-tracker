@@ -17,15 +17,24 @@ def index(request):
     context = {
         'current_user': current_user
         ,'account_list': account_list
+        ,'title': ''
     }
     return HttpResponse(template.render(context, request))
 
 @login_required
 def account_detail(request, account_id):
     account = get_object_or_404(Account, pk=account_id)
-    return render(request, 'finance/account.html', {'account':account})
+    context = {
+        'account':account
+        ,'title':"Transactions"
+    }
+    return render(request, 'finance/account.html', context)
 
 @login_required
 def create_account(request):
     current_user = request.user
-    return render(request, 'finance/create.html', {'user':current_user})
+    context = {
+        'user':current_user
+        ,'title':"create account"
+    }
+    return render(request, 'finance/create.html', context)

@@ -1,24 +1,21 @@
-{% extends 'finance/base.html' %}
+{% extends 'finance/fbase.html' %}
 
-{% block title %}Transactions{% endblock title %}>
+{% block title %}My Accounts{% endblock %}>
 
 {% block content %}
-    <div class="acct-title">Hello {% if current_user.first_name %}{{current_user.first_name}}{% else %}{{current_user.username}}{% endif %}</div>
-    <p><a href="{% url 'logout' %}">logout</a></p>
-
-    {% if account_list %}
-        <table class="index-tbl">
-            {% for account in account_list %}
-                <tr>
-                    <td><a href="{% url 'finance:account' account.id %}">{{account.title}}</a></td>
-                    <td>{{account.acct_type}}</td>
-                    <td>{{account.acct_balance}}</td>
-                </tr>    
-            {% endfor %}
-        </table>
-        <div class="button-round"><a href="{% url 'finance:create' %}">Create new account</a></div>
-    {% else %}
-        <h2>You have no accounts</h2>
-        <a class="button-round" href="{% url 'finance:create' %}">Create one</a>
-    {% endif %}
-{% endblock content %}
+{% if account_list %}
+    <table class="index-tbl">
+        {% for account in account_list %}
+            <tr>
+                <td><a href="{% url 'finance:account' account.id %}">{{account.title}}</a></td>
+                <td>{{account.acct_type}}</td>
+                <td>{{account.acct_balance}}</td>
+            </tr>    
+        {% endfor %}
+    </table>
+    <div class="button-round"><a href="{% url 'finance:create' %}">Create new account</a></div>
+{% else %}
+    <h2>You have no accounts</h2>
+    <a class="button-round" href="{% url 'finance:create' %}">Create one</a>
+{% endif %}
+{% endblock %}
