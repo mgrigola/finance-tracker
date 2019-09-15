@@ -22,6 +22,7 @@ def redirect_home(request):
 
 urlpatterns = [
     path('finance/', include('finance.urls'))
+    # ,path('accounts/logout/', include('django.contrib.auth.urls'))
     ,path('accounts/', include('django.contrib.auth.urls'))
     ,path('admin/', admin.site.urls)
     ,path('', redirect_home, name='index')

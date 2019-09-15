@@ -17,7 +17,8 @@
 	<div id="container">
 		<div id="header">
 			<div id="branding">
-				{% block branding %}<img src="{% static 'finance/images/cash.jpg' %}" height="62" width="100" alt="Finance" id="headerlogo" title="finance"><h1>Finance</h1>{% endblock %}
+				<!-- {% block branding2 %}<img src="{% static 'finance/images/cash.jpg' %}" height="72" width="100" alt="Finance" id="header-logo" title="finance"><h1>Finance</h1>{% endblock %} -->
+				{% block branding %}<h1>Finance</h1>{% endblock %}
 			</div>
 			{% if user.is_authenticated %}
 				<span id="user-tools">Welcome, <strong>{% firstof user.first_name user.username %}</strong>
@@ -25,6 +26,7 @@
 						<div style="float:right;padding-right:10px">
 							<a href="/accounts/password_change/">Change password</a>
 							<a href="/accounts/logout/">Log out</a>
+							<a href="/admin/login/">admin</a>
 						</div>
 					{% endblock %}
 				</span>

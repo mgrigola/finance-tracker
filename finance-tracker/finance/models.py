@@ -70,12 +70,24 @@ class Transaction(models.Model):
     tx_type = models.CharField(max_length=32, default=None, blank=True, null=True)
     amount = models.FloatField(default=0.0)
     balance = models.FloatField(default=0.0, blank=True, null=True) #balance after the transaction if available
+    
+    def is_positive(self):
+        return (self.amount > 0)
+
+    # specifically for Chase descriptions, they have a bunch of spaces after the real description, then some sort of unique identifier info
+    def short_desc(self):
+        idx = self.description.find('  ')
+        return self.description[:idx]
+    
     class Meta:
         ordering = ['-tx_date']
+    
+
 
 class FinanceCategory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
+    color = models.CharField(max_length=7, null=True) #represents rgb color
 
 # map each transaction to one or many cateogries
 class TransactionCategory(models.Model):

@@ -4,14 +4,29 @@ body {
 
 #branding {
     /* display: inline; */
-    background-color: #8c8;
+    /* background-color: #8c8; */
+    background-color: #000;
+    background-image: url("images/cash.jpg");
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: 24% 16%;
     font-family: 'Segoe UI';
-    padding: 8px 8px;
+    /* padding: 8px 8px; */
     width: 100vw;
+    height: 100px;
+    vertical-align: middle;
+    color: #082008;
+    text-shadow: 2px 2px 3px white;
+    padding: 1% 0%;
+    /* text-align: center; */
 }
 #branding h1 {
     display: inline;
-    margin: 10px;
+    padding: 0% 0%;
+    margin: 18px;
+    vertical-align: center;
+    text-align: center;
+    letter-spacing: 2px;
 }
 
 .acct-title {

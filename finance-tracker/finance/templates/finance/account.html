@@ -3,6 +3,7 @@
 {% block title %}Transactions{% endblock %}>
 
 
+
 {% block content %}
 	<div style="display: block;">
 	    <span class="acct-title">{{account.title}} - {{account.acct_type}}</span>
@@ -17,16 +18,16 @@
 	            <th>Type</th>
 	            <th>Date</th>
 	            <th>Description</th>
-	            <th align="right">Amount</th>
-	            <th align="right">Balance</th>
+	            <th style="text-align:right;">Amount</th>
+	            <th style="text-align:right;">Balance</th>
 	        </tr>
-	        {% for tx in account.transaction_set.all %}
-	            <tr>
+            {% for tx in account.transaction_set.all %}
+	            <tr id={{tx.id}}>
 	                <td>{{tx.tx_type}}</td>
 	                <td>{{tx.tx_date|date:'M-d'}}</td>
-	                <td>{{tx.description}}</td>
-	                <td align="right">{{tx.amount|floatformat:2}}</td>
-	                <td align="right">{{tx.balance|floatformat:2}}</td>
+	                <td>{{tx.short_desc}}</td>
+	                <td style="text-align:right; background-color: {%if tx.is_positive %}#efe{%else%}#fee{% endif %}">{{tx.amount|floatformat:2}}</td>
+	                <td style="text-align:right; background-color: {%if tx.is_positive %}#efe{%else%}#fee{% endif %}">{{tx.balance|floatformat:2}}</td>
 	            </tr>
 	        {% endfor %}
 	    </table>
