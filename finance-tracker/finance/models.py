@@ -79,6 +79,9 @@ class Transaction(models.Model):
         idx = self.description.find('  ')
         return self.description[:idx]
     
+    def get_categories(self):
+        return TransactionCategory.objects.filter(transaction=self)
+
     class Meta:
         ordering = ['-tx_date']
     
@@ -93,4 +96,7 @@ class FinanceCategory(models.Model):
 class TransactionCategory(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     category = models.ForeignKey(FinanceCategory, on_delete=models.CASCADE)
+
+    def get_color(self):
+        return self.category.color
 

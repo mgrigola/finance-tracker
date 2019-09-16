@@ -41,7 +41,7 @@ body {
 	color: #6b6;
     margin: 10px;
     font-weight: bolder;
-    padding: 0 0px 0 10px;
+    padding: 0px 0px 0px 10px;
 }
 
 .detail-tbl td{
@@ -49,15 +49,16 @@ body {
 	font: 12px;
 	color: #00a;
     border-spacing: 0;
-    padding: 2px 8px;
+    padding-top: 2px;
+    padding-right: 2px;
 }
 .detail-tbl th {
     text-align: left;
     vertical-align: bottom;
-    padding: 1px;
+    padding-right: 4px;
     border-bottom: 1px solid #ddd;
     height: 30px;
-	font: 14px;
+	font-size: 14px;
 	font-weight: bold;
     color: #00f;
     font-family: 'Segoe UI';
@@ -83,4 +84,22 @@ body {
 	font: 14px;
 	font-weight: bold;
     font-family: 'Segoe UI';
+}
+
+td.cat-sqr {
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    letter-spacing: 0px;
+}
+
+.cat-sqr span {
+    /* font-size: 8; */
+    display: inline-block;
+    letter-spacing: 0px;
+    width: 20px;
+    height: 18px;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
 }

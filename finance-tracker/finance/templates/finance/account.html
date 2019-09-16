@@ -2,8 +2,6 @@
 
 {% block title %}Transactions{% endblock %}>
 
-
-
 {% block content %}
 	<div style="display: block;">
 	    <span class="acct-title">{{account.title}} - {{account.acct_type}}</span>
@@ -15,6 +13,7 @@
 	<div class="detail-tbl-container">
 	    <table class="detail-tbl">
 	        <tr>
+                <th>Category</th>
 	            <th>Type</th>
 	            <th>Date</th>
 	            <th>Description</th>
@@ -23,6 +22,13 @@
 	        </tr>
             {% for tx in account.transaction_set.all %}
 	            <tr id={{tx.id}}>
+                    <td class="cat-sqr">
+                        {% for cat in tx.get_categories %}
+                            <!-- -->
+                            <!--  {{cat.id}}-->
+                            <span id="{{tx.id}}-{{cat.id}}" style="background-color:{{cat.get_color}};"></span>
+                        {% endfor %}
+                    </td>
 	                <td>{{tx.tx_type}}</td>
 	                <td>{{tx.tx_date|date:'M-d'}}</td>
 	                <td>{{tx.short_desc}}</td>
@@ -33,3 +39,4 @@
 	    </table>
 	</div>
 {% endblock content %}
+
