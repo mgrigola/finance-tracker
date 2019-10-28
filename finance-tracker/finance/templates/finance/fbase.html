@@ -3,22 +3,19 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="NONE,NOARCHIVE" />
 	<title>{% block title %}Finance{% endblock %}</title>
-	{% block blockbots %}
-		<meta name="robots" content="NONE,NOARCHIVE" />
-	{% endblock %}
 	<link rel="stylesheet" type="text/css" href="{% static 'finance/style.css' %}" />
 	<link rel="shortcut icon" href="{% static 'finance/images/chasefavicon.ico' %}">
-	{% block extrastyle %}{% endblock %}
-	{% block extrahead %}{% endblock %}
+	{% block headstyle %}{% endblock %}
+	{% block headscript %}{% endblock %}
 </head>
 
 <body>
 	<div id="container">
 		<div id="header">
 			<div id="branding">
-				<!-- {% block branding2 %}<img src="{% static 'finance/images/cash.jpg' %}" height="72" width="100" alt="Finance" id="header-logo" title="finance"><h1>Finance</h1>{% endblock %} -->
-				{% block branding %}<h1>Finance</h1>{% endblock %}
+				<h1>Finance</h1>
 			</div>
 			{% if user.is_authenticated %}
 				<span id="user-tools">Welcome, <strong>{% firstof user.first_name user.username %}</strong>
@@ -54,17 +51,13 @@
 		{% endblock messages %}
 		
 		<div id="content-stuff" class="{% block coltype %}colM{% endblock %}">
-			{% block pretitle %}{% endblock %}
-			{% block contentttitle %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-			{% block content %}
-			{% block object-tools %}{% endblock %}
-			<!-- ((content)) -->
-			{% endblock %}
+			{% block contentttitle %}{% if title %}<h1>{{title}}</h1>{% endif %}{% endblock %}
+			{% block content %}{% endblock %}
 			{% block sidebar %}{% endblock %}
 			<br class="clear" />
 		</div>
 		
-		
+		{% block bodyscript %}{% endblock %}
 		{% block footer %}<div id="footer"></div>{% endblock %}
 	</div>
 </body>

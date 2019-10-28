@@ -9,14 +9,14 @@ body {
     background-image: url("images/cash.jpg");
     background-repeat: repeat;
     background-attachment: fixed;
-    background-position: 24% 16%;
+    background-position: 65% 16%;
     font-family: 'Segoe UI';
     /* padding: 8px 8px; */
     width: 100vw;
     height: 100px;
     vertical-align: middle;
     color: #082008;
-    text-shadow: 2px 2px 3px white;
+    text-shadow: 4px 4px 4px #fff;
     padding: 1% 0%;
     /* text-align: center; */
 }
@@ -28,17 +28,23 @@ body {
     text-align: center;
     letter-spacing: 2px;
 }
+.acct-summary {
+    background-image: linear-gradient(to bottom right, #38d, #fff);
+    margin: 0px;
+    border-radius: 6px;
+    width: 100%;
+}
 
 .acct-title {
-	font-size: 24;
+	font-size: 24pt;
 	color: #004;
     margin: 20px;
     font-weight: bolder;
 }
 
 .acct-bal {
-	font-size: 24;
-	color: #6b6;
+	font-size: 24pt;
+	color: #030;
     margin: 10px;
     font-weight: bolder;
     padding: 0px 0px 0px 10px;
@@ -46,7 +52,7 @@ body {
 
 .detail-tbl td{
     border-collapse: collapse;
-	font: 12px;
+	font-size: 11pt;
 	color: #00a;
     border-spacing: 0;
     padding-top: 2px;
@@ -58,7 +64,7 @@ body {
     padding-right: 4px;
     border-bottom: 1px solid #ddd;
     height: 30px;
-	font-size: 14px;
+	font-size: 13pt;
 	font-weight: bold;
     color: #00f;
     font-family: 'Segoe UI';
@@ -66,7 +72,7 @@ body {
 
 .button-round a {
     display: inline-block;
-    font-size: 16px;
+    font-size: 16pt;
     font-family: 'Segoe UI';
     text-align: center;
     vertical-align: center;
@@ -81,25 +87,52 @@ body {
     text-align: left;
     vertical-align: bottom;
     padding: 5px 20px;
-	font: 14px;
+	font-size: 14pt;
 	font-weight: bold;
     font-family: 'Segoe UI';
 }
 
 td.cat-sqr {
-    display: inline-block;
-    padding: 0px;
+    /* display: inline-block; */
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
     margin: 0px;
     letter-spacing: 0px;
+    /* float: left; */
 }
 
-.cat-sqr span {
+.cat-sqr div {
     /* font-size: 8; */
-    display: inline-block;
+    /* display: inline-block; */
+    float: left;
     letter-spacing: 0px;
-    width: 20px;
-    height: 18px;
-    padding: 0px;
-    margin: 0px;
+    width: 16px;
+    height: 15px;
+    padding: 1px;
+    margin: .5px;
     border: 1px solid black;
 }
+
+.tooltip {
+    position: relative;
+} 
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    white-space: nowrap;
+    margin-left: -60%; 
+    bottom: 110%;
+    left: 50%; 
+    background-color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

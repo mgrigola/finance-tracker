@@ -1,9 +1,10 @@
 {% extends 'finance/fbase.html' %}
+{% load static %}
 
 {% block title %}Transactions{% endblock %}>
 
 {% block content %}
-	<div style="display: block;">
+	<div class="acct-summary" style="display: block;">
 	    <span class="acct-title">{{account.title}} - {{account.acct_type}}</span>
 	    <span class="acct-bal">${{account.acct_balance}}</span>
 	    <span>(as of {{account.latest_date}})</span>
@@ -15,7 +16,7 @@
 	        <tr>
                 <th>Category</th>
 	            <th>Type</th>
-	            <th>Date</th>
+	            <th>Date  </th>
 	            <th>Description</th>
 	            <th style="text-align:right;">Amount</th>
 	            <th style="text-align:right;">Balance</th>
@@ -23,11 +24,11 @@
             {% for tx in account.transaction_set.all %}
 	            <tr id={{tx.id}}>
                     <td class="cat-sqr">
+                        <div class="new-cat-select"></div>
                         {% for cat in tx.get_categories %}
-                            <!-- -->
-                            <!--  {{cat.id}}-->
-                            <span id="{{tx.id}}-{{cat.id}}" style="background-color:{{cat.get_color}};"></span>
+                            <div class="tooltip" id="{{tx.id}}-{{cat.id}}" style="background-color:{{cat.color}}"><span class="tooltiptext" style="color:{{cat.color}}">{{cat.title}}</span></div>
                         {% endfor %}
+
                     </td>
 	                <td>{{tx.tx_type}}</td>
 	                <td>{{tx.tx_date|date:'M-d'}}</td>
@@ -40,3 +41,7 @@
 	</div>
 {% endblock content %}
 
+{% block bodyscript %}
+    <script type="text/javascript">var d = "{{data}}";</script>
+    <script src="{% static 'finance/test.js' %}"></script>
+{% endblock bodyscript %}

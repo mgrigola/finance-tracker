@@ -10,6 +10,13 @@ import csv
 # class User(AbstractUser):
 #     pass
 
+# category definitions unique to a user
+class FinanceCategory(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=64)
+    color = models.CharField(max_length=7, null=True) #represents rgb color
+    
+
 class Account(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=64)
@@ -70,7 +77,8 @@ class Transaction(models.Model):
     tx_type = models.CharField(max_length=32, default=None, blank=True, null=True)
     amount = models.FloatField(default=0.0)
     balance = models.FloatField(default=0.0, blank=True, null=True) #balance after the transaction if available
-    
+    categories = models.ManyToManyField(FinanceCategory)
+
     def is_positive(self):
         return (self.amount > 0)
 
@@ -80,23 +88,20 @@ class Transaction(models.Model):
         return self.description[:idx]
     
     def get_categories(self):
-        return TransactionCategory.objects.filter(transaction=self)
+        return self.categories.all()
+        # return TransactionCategory.objects.filter(transaction=self)
 
     class Meta:
         ordering = ['-tx_date']
     
 
 
-class FinanceCategory(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=64)
-    color = models.CharField(max_length=7, null=True) #represents rgb color
 
-# map each transaction to one or many cateogries
-class TransactionCategory(models.Model):
-    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
-    category = models.ForeignKey(FinanceCategory, on_delete=models.CASCADE)
+# # maps each transaction to one or many cateogries
+# class TransactionCategory(models.Model):
+#     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+#     category = models.ForeignKey(FinanceCategory, on_delete=models.CASCADE)
 
-    def get_color(self):
-        return self.category.color
+    # def get_color(self):
+    #     return self.category.color
 

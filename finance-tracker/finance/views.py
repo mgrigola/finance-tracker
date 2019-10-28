@@ -5,8 +5,9 @@ from django.template import loader
 from django.urls import reverse
 from django.db.models import F
 from django.utils import timezone
+import json
 
-from .models import Account, Transaction, TransactionCategory
+from .models import Account, Transaction #, TransactionCategory
 
 @login_required
 def index(request):
@@ -24,9 +25,12 @@ def index(request):
 @login_required
 def account_detail(request, account_id):
     account = get_object_or_404(Account, pk=account_id)
+    #data = Transaction.objects.filter(account=account)
+    data = 'abcd'
     context = {
-        'account':account
-        ,'title':"Transactions"
+        'account': account,
+        'title': "Transactions",
+        'data': data
     }
     return render(request, 'finance/account.html', context)
 

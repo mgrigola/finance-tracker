@@ -16,7 +16,7 @@ class AccountAdmin(admin.ModelAdmin):
 
 class FinanceCategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'color')
-    list_filter = ['user']        # allow filter on Question.pub_date
+    list_filter = ['user']
     search_fields = ['title' 'user']
     form = FinanceCategoryForm
     fieldsets = [
