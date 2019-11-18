@@ -10,13 +10,21 @@
 	    <span>(as of {{account.latest_date}})</span>
 	</div>
 	
+	<table>
+	{% for cat in userCats %}
+		<span>
+			<th>{{cat.title}}</th>
+			<td class="cat-sqr"><div style="background-color:{{cat.color}}"></div></td>
+		</span>
+	{% endfor %}
+	</table>
 	
 	<div class="detail-tbl-container">
 	    <table class="detail-tbl">
 	        <tr>
                 <th>Category</th>
 	            <th>Type</th>
-	            <th>Date  </th>
+	            <th>Date</th>
 	            <th>Description</th>
 	            <th style="text-align:right;">Amount</th>
 	            <th style="text-align:right;">Balance</th>

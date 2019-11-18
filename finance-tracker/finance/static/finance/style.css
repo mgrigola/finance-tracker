@@ -31,6 +31,7 @@ body {
 .acct-summary {
     background-image: linear-gradient(to bottom right, #38d, #fff);
     margin: 0px;
+    padding: 8px 8px;
     border-radius: 6px;
     width: 100%;
 }
@@ -136,3 +137,15 @@ td.cat-sqr {
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+  
+#header {
+    border-bottom: 1px solid black;
+}
+.breadcrumbs {
+    /* text-align: left;
+    vertical-align: bottom; */
+    padding: 12px 2px;
+	font-size: 14pt;
+	font-weight: bold;
+    font-family: 'Segoe UI';
+}
