@@ -69,6 +69,7 @@ class Account(models.Model):
         self.acct_balance = bal
         self.save()
     
+    # aggregate transaction amounts by category - not very efficiently...
     def aggregateByCategory(self, filt):
         tots = {}
         for tx in self.transaction_set.filter(id__gte=338):
