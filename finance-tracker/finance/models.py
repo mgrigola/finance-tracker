@@ -68,6 +68,18 @@ class Account(models.Model):
         
         self.acct_balance = bal
         self.save()
+    
+    def aggregateByCategory(self, filt):
+        tots = {}
+        for tx in self.transaction_set.filter(id__gte=338):
+            for cat in tx.get_categories():
+                if not cat in tots:
+                    tots[cat] = tx.amount
+                else:
+                    tots[cat] += tx.amount
+        
+        return(tots)
+            
 
 
 class Transaction(models.Model):
