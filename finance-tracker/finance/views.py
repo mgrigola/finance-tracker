@@ -30,12 +30,14 @@ def account_detail(request, account_id): # , dateRange) ?
     dateRangeStart = datetime.datetime.now() + datetime.timedelta(days=-180)
     dateRangeEnd = datetime.datetime.now()
     catSums = account.aggregate_transactions_by_category(dateRangeStart, dateRangeEnd)
+    for cat in userCats:
+        if not cat in catSums: catSums[cat]=0
+    
     jsData = 'abcd'
     context = {
         'account': account,
         'title': "Transactions",
-        'userCats': userCats,
-        'catSums': catSums
+        'catSums': catSums,
         'jsData': jsData
     }
     return render(request, 'finance/account.html', context)

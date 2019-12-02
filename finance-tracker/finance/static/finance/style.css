@@ -149,3 +149,31 @@ td.cat-sqr {
 	font-weight: bold;
     font-family: 'Segoe UI';
 }
+
+.cat-sum-flex {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: DodgerBlue;
+}
+  
+.cat-sum-flex span {
+    background-color: #f1f1f1;
+    width: 200px;
+    margin: 4px;
+    text-align: left;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+
+.cat-sqr2 {
+    /* font-size: 8; */
+    /* display: inline-block; */
+    float: left;
+    letter-spacing: 0px;
+    width: 16px;
+    height: 15px;
+    padding: 1px;
+    margin: .5px;
+    border: 1px solid black;
+}

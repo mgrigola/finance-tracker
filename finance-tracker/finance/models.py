@@ -86,14 +86,14 @@ class Account(models.Model):
                     tots[depositCat] += tx.amount
                 # withdrawl total is negative
                 else:
-                    tots[withdrawCat] += tx.amount
+                    tots[withdrawlCat] += tx.amount
                         
             else:
                 for cat in qset:
                     if tx.amount > 0:
                         tots[depositCat] += tx.amount
                     else:
-                        tots[withdrawCat] += tx.amount
+                        tots[withdrawlCat] += tx.amount
                     
                     if not cat in tots:
                         tots[cat] = tx.amount
