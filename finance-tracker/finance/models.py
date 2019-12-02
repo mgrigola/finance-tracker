@@ -6,13 +6,16 @@ import uuid
 import datetime
 import csv
 
+WITHDRAWL_CATEGORY_ID = 11
+DEPOSIT_CATEGORY_ID = 10
+
 # my custom user, in case it needs to change. not easy to migrate later
 # class User(AbstractUser):
 #     pass
 
 # category definitions unique to a user
 class FinanceCategory(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=64)
     color = models.CharField(max_length=7, null=True) #represents rgb color
     
@@ -30,6 +33,7 @@ class Account(models.Model):
 
     def latest_date(self):
         return self.transaction_set.order_by('-tx_date')[0].tx_date
+    
     # later add different parser for different acct_source
     # Chase export format:
     # 0] Debit/Credit
@@ -39,7 +43,7 @@ class Account(models.Model):
     # 4] Type (ACH_DEBIT/CHECK/etc)
     # 5] Balance-after-transaction
     # 6] Check #
-    def loadTransactionsFromFile(self, file_name):
+    def load_transactions_from_file(self, file_name):
         with open(file_name, 'r', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for row in reader:
@@ -70,17 +74,37 @@ class Account(models.Model):
         self.save()
     
     # aggregate transaction amounts by category - not very efficiently...
-    def aggregateByCategory(self, filt):
-        tots = {}
-        for tx in self.transaction_set.filter(id__gte=338):
-            for cat in tx.get_categories():
-                if not cat in tots:
-                    tots[cat] = tx.amount
+    def aggregate_transactions_by_category(self, dateStart, dateEnd=datetime.datetime.now()):
+        withdrawlCat = FinanceCategory.objects.get(pk=WITHDRAWL_CATEGORY_ID)
+        depositCat = FinanceCategory.objects.get(pk=DEPOSIT_CATEGORY_ID)
+        tots = {withdrawlCat: 0, depositCat:0}
+        
+        for tx in self.transaction_set.filter(tx_date__range=(dateStart, dateEnd)): # TODO: check timezone - maybe at caller
+            qset = tx.get_categories()
+            if len(qset) == 0:
+                if tx.amount > 0:
+                    tots[depositCat] += tx.amount
+                # withdrawl total is negative
                 else:
-                    tots[cat] += tx.amount
+                    tots[withdrawCat] += tx.amount
+                        
+            else:
+                for cat in qset:
+                    if tx.amount > 0:
+                        tots[depositCat] += tx.amount
+                    else:
+                        tots[withdrawCat] += tx.amount
+                    
+                    if not cat in tots:
+                        tots[cat] = tx.amount
+                    else:
+                        tots[cat] += tx.amount
         
         return(tots)
-            
+    
+    # return a dictionary with dates  - Python 3.6: dicts are ordered sets!
+    def aggregate_balance_by_date(self, dateStart, dateEnd=datetime.datetime.now()):
+        pass
 
 
 class Transaction(models.Model):
@@ -106,15 +130,3 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ['-tx_date']
-    
-
-
-
-# # maps each transaction to one or many cateogries
-# class TransactionCategory(models.Model):
-#     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
-#     category = models.ForeignKey(FinanceCategory, on_delete=models.CASCADE)
-
-    # def get_color(self):
-    #     return self.category.color
-

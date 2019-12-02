@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.db.models import F
 from django.utils import timezone
 import json
+import datetime
 
 from .models import Account, Transaction, FinanceCategory
 
@@ -23,15 +24,18 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 @login_required
-def account_detail(request, account_id):
+def account_detail(request, account_id): # , dateRange) ?
     account = get_object_or_404(Account, pk=account_id)
     userCats = FinanceCategory.objects.filter(user=request.user)
-    #data = Transaction.objects.filter(account=account)
+    dateRangeStart = datetime.datetime.now() + datetime.timedelta(days=-180)
+    dateRangeEnd = datetime.datetime.now()
+    catSums = account.aggregate_transactions_by_category(dateRangeStart, dateRangeEnd)
     jsData = 'abcd'
     context = {
         'account': account,
         'title': "Transactions",
         'userCats': userCats,
+        'catSums': catSums
         'jsData': jsData
     }
     return render(request, 'finance/account.html', context)
