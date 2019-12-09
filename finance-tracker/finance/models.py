@@ -74,6 +74,7 @@ class Account(models.Model):
         self.save()
     
     # aggregate transaction amounts by category - not very efficiently...
+    # TODO: aggregate in query, i think use django function 'f' for raw-ish sql?
     def aggregate_transactions_by_category(self, dateStart, dateEnd=datetime.datetime.now()):
         withdrawlCat = FinanceCategory.objects.get(pk=WITHDRAWL_CATEGORY_ID)
         depositCat = FinanceCategory.objects.get(pk=DEPOSIT_CATEGORY_ID)
@@ -103,8 +104,36 @@ class Account(models.Model):
         return(tots)
     
     # return a dictionary with dates  - Python 3.6: dicts are ordered sets!
+    # TODO: aggregate in query, at least don;t rely on this ordered set business
     def aggregate_balance_by_date(self, dateStart, dateEnd=datetime.datetime.now()):
-        pass
+        withdrawls = {}
+        deposits = {}
+        totals = {}
+        balance = None
+        withdrawlTot = 0
+        depositTot = 0
+
+        # date range set is ordered from recent to old
+        for tx in reversed(self.transaction_set.filter(tx_date__range=(dateStart, dateEnd))): # TODO: check timezone - maybe at caller
+            if balance == None:
+                balance = tx.balance
+            else:
+                balance += tx.amount
+            
+            totals[tx.date] = balance
+
+            if tx.amount > 0:
+                depositTot += tx.amount
+                deposits[tx.date] = depositTot
+            else:
+                withdrawlTot -= tx.amount
+                withdrawls[tx.date] = withdrawlTot
+            
+        return({
+            'withdrawls':withdrawls
+            ,'deposits': deposits
+            ,'totals': totals
+        })
 
 
 class Transaction(models.Model):

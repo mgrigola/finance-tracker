@@ -1,9 +1,22 @@
 {% extends 'finance/fbase.html' %}
 
+{% block headstyle %}
+    <link href="https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.css" rel=”stylesheet” type=”text/css”>
+    <link href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.css" rel=”stylesheet” type=”text/css”>
+{% endblock %}
+
+{% block headscript %}
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js"></script>
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.3.4.min.js"></script>
+    {{ bokehScript | safe }}
+{% endblock %}
+
 {% block title %}My Accounts{% endblock %}>
 
 {% block content %}
 {% if account_list %}
+    {{ bokehPlot | safe }}
+
     <table class="index-tbl">
         {% for account in account_list %}
             <tr>

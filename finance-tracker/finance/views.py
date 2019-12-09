@@ -7,6 +7,8 @@ from django.db.models import F
 from django.utils import timezone
 import json
 import datetime
+from bokeh.plotting import figure, output_file, show
+from bokeh.embed import components
 
 from .models import Account, Transaction, FinanceCategory
 
@@ -16,10 +18,19 @@ def index(request):
     current_user = request.user
     account_list = Account.objects.filter(user_id=current_user.id)
     template = loader.get_template('finance/index.html')
+
+    testX = [1,2,3,4,5]
+    testY = [1,2,3,4,5]
+    testPlot = figure(title='Test Plot', x_axis_label='Test X', y_axis_label='Test Y', plot_width=400, plot_height=400)
+    testPlot.line(testX, testY, line_width=2)
+    bokehScript, bokehPlot = components(testPlot)
+
     context = {
         'current_user': current_user
         ,'account_list': account_list
         ,'title': ''
+        ,'bokehScript': bokehScript
+        ,'bokehPlot': bokehPlot
     }
     return HttpResponse(template.render(context, request))
 
