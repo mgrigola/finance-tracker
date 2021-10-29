@@ -24,9 +24,10 @@ class Account(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=64)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    acct_balance = models.FloatField(default=0.0)
-    acct_source = models.CharField(max_length=64, default=None, blank=True, null=True)  #e.g. Chase (should be INSTITUTION_ID + anotehr table)
-    acct_type = models.CharField(max_length=64, default=None, blank=True, null=True)   #savings, checking, investment - later drives how we show transactions maybe?
+    acct_balance = models.FloatField(default=0.0, verbose_name='Current Balance')
+    init_balance = models.FloatField(default=0.0, verbose_name='Initial Balance')
+    acct_source = models.CharField(max_length=64, default=None, blank=True, null=True, verbose_name='Source/Institution')  #e.g. Chase (should be INSTITUTION_ID + anotehr table)
+    acct_type = models.CharField(max_length=64, default=None, blank=True, null=True, verbose_name='Type')   #savings, checking, investment - later drives how we show transactions maybe?
 
     def __str__(self):
         return self.title
@@ -120,14 +121,14 @@ class Account(models.Model):
             else:
                 balance += tx.amount
             
-            totals[tx.date] = balance
+            totals[tx.tx_date] = balance
 
             if tx.amount > 0:
                 depositTot += tx.amount
-                deposits[tx.date] = depositTot
+                deposits[tx.tx_date] = depositTot
             else:
                 withdrawlTot -= tx.amount
-                withdrawls[tx.date] = withdrawlTot
+                withdrawls[tx.tx_date] = withdrawlTot
             
         return({
             'withdrawls':withdrawls
@@ -139,7 +140,7 @@ class Account(models.Model):
 class Transaction(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     description = models.CharField(max_length=200, default=None, blank=True, null=True)
-    tx_date = models.DateTimeField('transaction date')
+    tx_date = models.DateTimeField('transaction date', default=datetime.datetime.min)
     tx_type = models.CharField(max_length=32, default=None, blank=True, null=True)
     amount = models.FloatField(default=0.0)
     balance = models.FloatField(default=0.0, blank=True, null=True) #balance after the transaction if available

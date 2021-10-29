@@ -1,0 +1,13 @@
+{% extends 'finance/fbase.html' %}
+
+{% block title %}Create New Account{% endblock title %}
+
+{% block content %}
+<div id="content-main">
+    <form action="{% url 'finance:create_account' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create"/>
+    </form>
+</div>
+{% endblock content %}
