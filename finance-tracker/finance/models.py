@@ -33,7 +33,13 @@ class Account(models.Model):
         return self.title
 
     def latest_date(self):
-        return self.transaction_set.order_by('-tx_date')[0].tx_date
+        try:
+            latestTx = self.transaction_set.order_by('-tx_date')[0]
+            latestDate = latestTx.tx_date
+        except:
+            latestDate = datetime.datetime.now()
+        finally:
+            return latestDate
     
     # later add different parser for different acct_source
     # Chase export format:

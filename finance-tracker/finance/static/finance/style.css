@@ -29,6 +29,7 @@ body {
     letter-spacing: 2px;
 }
 .acct-summary {
+    display: block;
     background-image: linear-gradient(to bottom right, #38d, #fff);
     margin: 0px;
     padding: 8px 8px;
@@ -40,7 +41,8 @@ body {
 	font-size: 24pt;
 	color: #004;
     margin: 20px;
-    font-weight: bolder;
+    font-weight: 600;
+    font-family: 'Open Sans';
 }
 
 .acct-bal {
@@ -51,15 +53,15 @@ body {
     padding: 0px 0px 0px 10px;
 }
 
-.detail-tbl td{
-    border-collapse: collapse;
+.acct-detail-tbl td{
+    /* border-collapse: collapse; */
 	font-size: 11pt;
 	color: #00a;
-    border-spacing: 0;
+    border-spacing: 1;
     padding-top: 2px;
     padding-right: 2px;
 }
-.detail-tbl th {
+.acct-detail-tbl th {
     text-align: left;
     vertical-align: bottom;
     padding-right: 4px;
@@ -68,7 +70,14 @@ body {
 	font-size: 13pt;
 	font-weight: bold;
     color: #00f;
-    font-family: 'Segoe UI';
+    /* font-family: 'Segoe UI'; */
+}
+
+.acct-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 20px;
+    font-family: 'Open Sans';
 }
 
 .button-round a {
@@ -148,16 +157,19 @@ td.cat-sqr {
 	font-size: 14pt;
 	font-weight: bold;
     font-family: 'Segoe UI';
+    background-color: #dfd;
 }
 
 .cat-sum-flex {
     display: flex;
     flex-wrap: wrap;
-    background-color: DodgerBlue;
+    /* background-color: #adf; */
+    background-color: #fff;
+    font-family: 'Open Sans';
 }
   
 .cat-sum-flex span {
-    background-color: #f1f1f1;
+    /* background-color: #f1f1f1; */
     width: 200px;
     margin: 4px;
     text-align: left;
@@ -174,6 +186,6 @@ td.cat-sqr {
     width: 16px;
     height: 15px;
     padding: 1px;
-    margin: .5px;
+    margin: .5px 2px;
     border: 1px solid black;
 }

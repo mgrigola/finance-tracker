@@ -5,16 +5,18 @@ from django.template import loader
 from django.urls import reverse
 from django.db.models import F
 from django.utils import timezone
-import json
-import datetime
+
+import json, csv, datetime, itertools, operator
+
 import bokeh.plotting as bkplotting
 import bokeh.embed as bkembed
 
 from .models import Account, Transaction, FinanceCategory
 from .forms import AccountForm, FinanceCategoryForm
 
+
 @login_required
-def index(request):
+def all_account_summary(request):
     # show the most recently published questions. exclude future-dated questions 
     current_user = request.user
     account_list = Account.objects.filter(user_id=current_user.id)
@@ -53,23 +55,40 @@ def account_detail(request, account_id): # , dateRange) ?
     userCats = FinanceCategory.objects.filter(user=request.user)
     dateRangeStart = datetime.datetime.now() + datetime.timedelta(days=-365)
     dateRangeEnd = datetime.datetime.now()
-    catSums = account.aggregate_transactions_by_category(dateRangeStart, dateRangeEnd)
+    catSums = acct.aggregate_transactions_by_category(dateRangeStart, dateRangeEnd)
     for cat in userCats:
         if not cat in catSums: catSums[cat]=0
     
     txs = acct.transaction_set.filter(tx_date__range=(dateRangeStart, dateRangeEnd))
-    plotData = [(tx.tx_date, tx.balance) for tx in txs.order_by('tx_date')]
-    plotDates = [row[0] for row in plotData]
-    plotBalances = [row[1] for row in plotData]
+    txData = [(tx.tx_date, tx.balance, tx.amount) for tx in txs.order_by('tx_date', '-id')]
+    plotDates = [row[0] for row in txData]
+    plotBalances = [row[1] for row in txData]
+
+    debitDates = [x[0] for x in filter(lambda x: x[2] < 0, txData)]
+    debitVals = [-x[2] for x in filter(lambda x: x[2] < 0, txData)]
+    debitVals = list(itertools.accumulate(debitVals, operator.add))
+
+    crebitDates = [x[0] for x in filter(lambda x: x[2] > 0, txData)]
+    crebitVals = [x[2] for x in filter(lambda x: x[2] > 0, txData)]
+    crebitVals = list(itertools.accumulate(crebitVals, operator.add))
+
     # testPlot = figure(title='Test Plot', x_axis_label='Test X', y_axis_label='Test Y', plot_width=400, plot_height=400)
     bPlot = bkplotting.figure(title='Balance', x_axis_type='datetime', y_axis_label='$', plot_width=60, plot_height=30)
+    bPlot.title.text_font_size = '12pt'
+    bPlot.title.align = 'center'
     bPlot.sizing_mode = 'scale_width'
-    bPlot.line(plotDates, plotBalances, line_width=3)
+    bPlot.line(plotDates, plotBalances, line_width=3, line_color='blue', legend_label='balance')
+    bPlot.line(debitDates, debitVals, line_width=2, line_color='red', alpha=0.8, legend_label='total debits')
+    bPlot.line(crebitDates, crebitVals, line_width=2, line_color='green', alpha=0.8, legend_label='total credits')
+    bPlot.toolbar.logo = None
+    bPlot.toolbar_location = None
+    bPlot.legend.location = 'top_left'
+
     bScript, bPlot = bkembed.components(bPlot)
 
     jsData = 'abcd'
     context = {
-        'account': account,
+        'account': acct,
         'title': "Transactions",
         'catSums': catSums,
         'jsData': jsData,
@@ -114,4 +133,25 @@ def create_account(request):
         #    form = AccountForm()
     context['form'] = form
     return render(request, 'finance/create_account.html', context)
+
+@login_required
+def account_export_empty(request, account_id):
+    #todo: provide different headers for different types of accounts? E.g. different banks and whatnot to match how they export data, maybe
+    acctSrc = get_object_or_404(Account, pk=account_id).acct_source
     
+    if acctSrc == 'Chase Bank':
+        tsvHeaders = ['Details', 'Posting Date','Description','Amount','Type','Balance','Check or Slip #']
+    elif acctSrc == 'Schwab':
+        tsvHeaders = ['Description', 'Date','Type','Amount','Balance']
+    else:
+        tsvHeaders = ['Description', 'Date','Type','Amount','Balance']
+
+    response = HttpResponse(
+        content_type='text/tsv',
+        headers={'Content-Disposition': 'attachment; filename="transaction-import-template.tsv"'},
+    )
+
+    writer = csv.writer(response, delimiter='\t')
+    writer.writerow(tsvHeaders)
+
+    return response
