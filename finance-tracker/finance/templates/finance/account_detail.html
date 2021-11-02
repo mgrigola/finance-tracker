@@ -19,17 +19,17 @@
 	    <span class="acct-title">{{account.title}} - {{account.acct_type}}</span>
 	    <span class="acct-bal">${{account.acct_balance}}</span>
 	    <span>(as of {{account.latest_date}})</span>
-	</div>
-	
-	<div class="cat-sum-flex">
-	{% for cat, totAmt in catSums.items %}
-		<span>
-			<div class="cat-sqr2" style="background-color:{{cat.color}}"></div>
-			<!-- <div class="cat-sqr2"><div style="background-color:{{cat.color}}"></div></div> -->
-			{{cat.title}}:
-			{{totAmt|floatformat:2}}
-		</span>
-	{% endfor %}
+		<div style="height: 10px;"></div>
+		<div class="cat-sum-flex">
+		{% for cat, totAmt in catSums.items %}
+			<span>
+				<div class="cat-sqr2" style="background-color:{{cat.color}}"></div>
+				<!-- <div class="cat-sqr2"><div style="background-color:{{cat.color}}"></div></div> -->
+				{{cat.title}}:
+				<span style="font-weight:bold;">{{totAmt|floatformat:2}}</span>
+			</span>
+		{% endfor %}
+		</div>
 	</div>
 	
 	<div class="acct-detail-grid">

@@ -1,17 +1,16 @@
-from django.forms import ModelForm, IntegerField, HiddenInput
-from django.forms.widgets import TextInput
+from django import forms
 from .models import FinanceCategory, Account
 
-class FinanceCategoryForm(ModelForm):
+class FinanceCategoryForm(forms.ModelForm):
     class Meta:
         model = FinanceCategory
         fields = '__all__'
         widgets = {
-            'color': TextInput(attrs={'type': 'color'}),
+            'color': forms.widgets.TextInput(attrs={'type': 'color'}),
         }
 
-class AccountForm(ModelForm):
-    copy_from = IntegerField(required=False, widget=HiddenInput())
+class AccountForm(forms.ModelForm):
+    copy_from = forms.IntegerField(required=False, widget=forms.HiddenInput())
 
     class Meta:
         model = Account
@@ -23,3 +22,6 @@ class AccountForm(ModelForm):
             'acct_type': 'checking, savings, brokerage, 401k, etc.'
         }
 
+class UploadTransactionFileForm(forms.Form):
+    title = forms.CharField
+    file = forms.FileField()

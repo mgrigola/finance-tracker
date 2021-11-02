@@ -12,7 +12,7 @@ import bokeh.plotting as bkplotting
 import bokeh.embed as bkembed
 
 from .models import Account, Transaction, FinanceCategory
-from .forms import AccountForm, FinanceCategoryForm
+from .forms import AccountForm, FinanceCategoryForm, UploadTransactionFileForm
 
 
 @login_required
@@ -39,7 +39,7 @@ def all_account_summary(request):
         bScript = ""
         bPlot = ""
     
-    template = loader.get_template('finance/index.html')
+    template = loader.get_template('finance/account_summary.html')
     context = {
         'current_user': current_user,
         'account_list': account_list,
@@ -48,6 +48,7 @@ def all_account_summary(request):
         'bokehPlot': bPlot,
     }
     return HttpResponse(template.render(context, request))
+
 
 @login_required
 def account_detail(request, account_id): # , dateRange) ?
@@ -97,42 +98,6 @@ def account_detail(request, account_id): # , dateRange) ?
     }
     return render(request, 'finance/account_detail.html', context)
 
-# @login_required
-# def create_account(request):
-#     current_user = request.user
-#     context = {
-#         'user':current_user
-#         ,'title':"create account"
-#     }
-#     return render(request, 'finance/create.html', context)
-@login_required
-def create_account(request):
-    context = {}
-    if request.method == 'POST':
-        form = AccountForm(request.POST)
-        if form.is_valid():
-            acct = form.save(commit=False)
-            acct.user = request.user
-            acct.save()
-
-            initTx = Transaction(account=acct, decription='initial balance', amount=acct.init_balance, balance=acct.init_balance)
-            initTx.save()
-            #return render(request, 'finance/create_account.html', args)
-            return HttpResponseRedirect(reverse('finance:index'))
-    else:
-        form = AccountForm()
-        # if 'account_id' in request.GET:
-        #     try:
-        #         Account.objects.get(pk=request.GET.get('account_id'))
-        #     except:
-        #         form = AccountForm()
-        #     else:
-        #         acct = Account.objects.get(pk=request.GET.get('account_id'))
-        #         form = AccountForm()
-        # else:
-        #    form = AccountForm()
-    context['form'] = form
-    return render(request, 'finance/create_account.html', context)
 
 @login_required
 def account_export_empty(request, account_id):
@@ -155,3 +120,38 @@ def account_export_empty(request, account_id):
     writer.writerow(tsvHeaders)
 
     return response
+
+
+''' FORM INPUTS '''
+
+@login_required
+def account_create(request, account_id):
+    context = {}
+    if request.method == 'POST':
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            acct = form.save(commit=False)
+            acct.user = request.user
+            acct.save()
+
+            initTx = Transaction(account=acct, decription='initial balance', amount=acct.init_balance, balance=acct.init_balance)
+            initTx.save()
+            #return render(request, 'finance/create_account.html', args)
+            return HttpResponseRedirect(reverse('finance:index'))
+    else:
+        form = AccountForm()
+    context['form'] = form
+    return render(request, 'finance/account_create.html', context)
+
+@login_required
+def upload_transactions_file(request):
+    if request.method == 'POST':
+        acct = get_object_or_404(Account, pk=account_id)
+        form = UploadTransactionFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            acct.load_transactions_from_file(request.FILES['file'])
+            return HttpResponseRedirect('/success/url/')
+    else:
+        form = UploadTransactionFileForm()
+    return render(request, 'finance/create_account.html', {'form': form})
+        

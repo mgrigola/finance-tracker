@@ -2,6 +2,19 @@ body {
     background: #fff
 }
 
+#header {
+    border-bottom: 1px solid black;
+}
+.breadcrumbs {
+    /* text-align: left;
+    vertical-align: bottom; */
+    padding: 2px 0px;
+	font-size: 12pt;
+	font-weight: bold;
+    font-family: 'Segoe UI';
+    background-color: #dfd;
+}
+
 #branding {
     /* display: inline; */
     /* background-color: #8c8; */
@@ -30,7 +43,8 @@ body {
 }
 .acct-summary {
     display: block;
-    background-image: linear-gradient(to bottom right, #38d, #fff);
+    background-image: linear-gradient(to bottom, #38d, #fff);
+    /* background-color: #88c0ff */
     margin: 0px;
     padding: 8px 8px;
     border-radius: 6px;
@@ -125,6 +139,38 @@ td.cat-sqr {
     border: 1px solid black;
 }
 
+.cat-sum-flex {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: #adf; */
+    /* background-color: #fff; */
+    font-family: 'Open Sans';
+}
+  
+.cat-sum-flex span {
+    /* background-color: #f1f1f1; */
+    width: 200px;
+    margin: 4px;
+    text-align: left;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+
+.cat-sqr2 {
+    /* font-size: 8; */
+    /* display: inline-block; */
+    float: left;
+    letter-spacing: 0px;
+    width: 16px;
+    height: 15px;
+    /* top | right | bottom | left */
+    /* padding: 1px 3px 1px 1px; */
+    /* margin: .5px 2px; */
+    margin: 1px 3px 1px 1px;
+    border: 1px solid black;
+}
+
 .tooltip {
     position: relative;
 } 
@@ -146,46 +192,3 @@ td.cat-sqr {
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
-  
-#header {
-    border-bottom: 1px solid black;
-}
-.breadcrumbs {
-    /* text-align: left;
-    vertical-align: bottom; */
-    padding: 12px 2px;
-	font-size: 14pt;
-	font-weight: bold;
-    font-family: 'Segoe UI';
-    background-color: #dfd;
-}
-
-.cat-sum-flex {
-    display: flex;
-    flex-wrap: wrap;
-    /* background-color: #adf; */
-    background-color: #fff;
-    font-family: 'Open Sans';
-}
-  
-.cat-sum-flex span {
-    /* background-color: #f1f1f1; */
-    width: 200px;
-    margin: 4px;
-    text-align: left;
-    line-height: 20px;
-    font-size: 14px;
-}
-
-
-.cat-sqr2 {
-    /* font-size: 8; */
-    /* display: inline-block; */
-    float: left;
-    letter-spacing: 0px;
-    width: 16px;
-    height: 15px;
-    padding: 1px;
-    margin: .5px 2px;
-    border: 1px solid black;
-}

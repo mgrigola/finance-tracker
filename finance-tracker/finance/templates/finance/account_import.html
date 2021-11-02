@@ -1,0 +1,18 @@
+{% extends 'finance/fbase.html' %}
+
+{% block title %}Import Transactions{% endblock title %}
+
+{% block content %}
+<div id="content-main">
+        <form id="file-form" action="" method="POST" enctype="multipart/form-data" data-valid="false">
+            {% csrf_token %}
+            <p>{{file_form.non_field_errors}}</p>
+            <p>{{file_form.input_file.errors}}</p>
+            <p>{{file_form.input_file.label_tag}} {{file_form.input_file.help_text}}</p>
+        </form>
+        <form action="{% url 'finance:create_account' %}" method="post">
+        {{ form.as_p }}
+        <input type="submit" value="Create"/>
+        </form>
+</div>
+{% endblock content %}
