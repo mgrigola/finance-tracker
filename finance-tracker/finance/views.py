@@ -100,8 +100,33 @@ def account_detail(request, account_id): # , dateRange) ?
 
 
 @login_required
+def account_export(request, account_id):
+    #todo: provide different headers for different types of accounts? E.g. different banks and whatnot to match how they export data, maybe
+    #todo: actually move to Account class
+    acctSrc = get_object_or_404(Account, pk=account_id).acct_source
+    
+    if acctSrc == 'Chase Bank':
+        tsvHeaders = ['Details', 'Posting Date','Description','Amount','Type','Balance','Check or Slip #']
+    elif acctSrc == 'Schwab':
+        tsvHeaders = ['Description', 'Date','Type','Amount','Balance']
+    else:
+        tsvHeaders = ['Description', 'Date','Type','Amount','Balance']
+
+    response = HttpResponse(
+        content_type='text/tsv',
+        headers={'Content-Disposition': 'attachment; filename="transaction-import-template.tsv"'},
+    )
+
+    writer = csv.writer(response, delimiter='\t')
+    writer.writerow(tsvHeaders)
+
+    return response
+
+
+@login_required
 def account_export_empty(request, account_id):
     #todo: provide different headers for different types of accounts? E.g. different banks and whatnot to match how they export data, maybe
+    #todo: actually move to Account class
     acctSrc = get_object_or_404(Account, pk=account_id).acct_source
     
     if acctSrc == 'Chase Bank':
@@ -125,7 +150,7 @@ def account_export_empty(request, account_id):
 ''' FORM INPUTS '''
 
 @login_required
-def account_create(request, account_id):
+def account_create(request):
     context = {}
     if request.method == 'POST':
         form = AccountForm(request.POST)
@@ -137,21 +162,23 @@ def account_create(request, account_id):
             initTx = Transaction(account=acct, decription='initial balance', amount=acct.init_balance, balance=acct.init_balance)
             initTx.save()
             #return render(request, 'finance/create_account.html', args)
-            return HttpResponseRedirect(reverse('finance:index'))
+            return HttpResponseRedirect(reverse('finance:all_account_summary'))
     else:
         form = AccountForm()
     context['form'] = form
     return render(request, 'finance/account_create.html', context)
 
+
 @login_required
-def upload_transactions_file(request):
+def upload_transactions_file(request, account_id):
+    acct = get_object_or_404(Account, pk=account_id)
     if request.method == 'POST':
         acct = get_object_or_404(Account, pk=account_id)
         form = UploadTransactionFileForm(request.POST, request.FILES)
         if form.is_valid():
-            acct.load_transactions_from_file(request.FILES['file'])
-            return HttpResponseRedirect('/success/url/')
+            acct.load_transactions_from_file(request.FILES['txFile'])
+            return HttpResponseRedirect(reverse('finance:account_detail', args=(account_id))
     else:
         form = UploadTransactionFileForm()
-    return render(request, 'finance/create_account.html', {'form': form})
+    return render(request, 'finance/account_import.html', {'form': form})
         

@@ -24,4 +24,4 @@ class AccountForm(forms.ModelForm):
 
 class UploadTransactionFileForm(forms.Form):
     title = forms.CharField
-    file = forms.FileField()
+    txFile = forms.FileField(label='Transaction data file', help_text='csv / tsv file in same format as the export')

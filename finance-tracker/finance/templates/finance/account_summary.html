@@ -26,9 +26,9 @@
             </tr>    
         {% endfor %}
     </table>
-    <div class="button-round"><a href="{% url 'finance:create_account' %}">Create new account</a></div>
+    <div class="button-round"><a href="{% url 'finance:account_create' %}">Create new account</a></div>
 {% else %}
     <h2>You have no accounts</h2>
-    <a class="button-round" href="{% url 'finance:create_account' %}">Create one</a>
+    <a class="button-round" href="{% url 'finance:account_create' %}">Create one</a>
 {% endif %}
 {% endblock %}
